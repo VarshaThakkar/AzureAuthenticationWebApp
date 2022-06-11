@@ -16,6 +16,6 @@ namespace AzureAuthenticationWebApp.Services
         Task<bool> AddAsync(Customer customer);
 
         Task<Users> EditAsync(Users user);
-        Task GetUserInfo();
+        Task GetNewUserInfoAndCreate();
     }
 }

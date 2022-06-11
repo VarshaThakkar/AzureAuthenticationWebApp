@@ -62,7 +62,7 @@ namespace AzureAuthenticationWebApp.Services
             //var userinfo = new ClaimsPrincipal(claimsIdentity);
             ////IEnumerable<Customer> customers = JsonConvert.DeserializeObject<IEnumerable<Customer>>(userinfo);
 
-          //  await GetUserInfo();
+            //  await GetUserInfo();
 
             var response = await _httpClient.GetAsync($"{ _UserServiceBaseAddress}/api/Protected");
             if (response.StatusCode == HttpStatusCode.OK)
@@ -142,21 +142,29 @@ namespace AzureAuthenticationWebApp.Services
             return false;
             // throw new HttpRequestException($"Invalid status code in the HttpResponseMessage: {response.StatusCode}.");
         }
-        public async Task GetUserInfo()
+        public async Task GetNewUserInfoAndCreate()
         {
-            var newuser = _contextAccessor.HttpContext.User.FindFirst("newUser").Value;
-            if (newuser == "true")
+            var claimnewUser = _contextAccessor.HttpContext.User.Claims;
+            foreach (var userinfo in claimnewUser)
             {
-                var email = _contextAccessor.HttpContext.User.FindFirst("emails").Value;
-                var objectid = _contextAccessor.HttpContext.User.
-                    FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                var customerinfo = new Customer
+                if (userinfo == _contextAccessor.HttpContext.User.FindFirst("newUser"))
                 {
-                    ObjectId = objectid,
-                    Email = email
-                };
-                await AddAsync(customerinfo);
+                    var newuser = _contextAccessor.HttpContext.User.FindFirst("newUser").Value;
 
+                    if (newuser == "true")
+                    {
+                        var email = _contextAccessor.HttpContext.User.FindFirst("emails").Value;
+                        var objectid = _contextAccessor.HttpContext.User.
+                            FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+                        var customerinfo = new Customer
+                        {
+                            ObjectId = objectid,
+                            Email = email
+                        };
+                        await AddAsync(customerinfo);
+
+                    }
+                }
             }
             return;
         }

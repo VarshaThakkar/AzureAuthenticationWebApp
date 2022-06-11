@@ -43,8 +43,7 @@ namespace AzureAuthenticationWebApp.Controllers
 
         public IActionResult Index()
         {
-            _userService.GetUserInfo();
-            //OnGetAsync();
+            _userService.GetNewUserInfoAndCreate();
             return View();
         }
         //public IList<MSGraphUser> Users { get; set; }
