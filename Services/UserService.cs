@@ -144,10 +144,10 @@ namespace AzureAuthenticationWebApp.Services
         }
         public async Task GetNewUserInfoAndCreate()
         {
-            var claimnewUser = _contextAccessor.HttpContext.User.Claims;
-            foreach (var userinfo in claimnewUser)
+            var claims = _contextAccessor.HttpContext.User.Claims;
+            foreach (var newUserclaim in claims)
             {
-                if (userinfo == _contextAccessor.HttpContext.User.FindFirst("newUser"))
+                if (newUserclaim == _contextAccessor.HttpContext.User.FindFirst("newUser"))
                 {
                     var newuser = _contextAccessor.HttpContext.User.FindFirst("newUser").Value;
 
